@@ -54,10 +54,10 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
         <div className="p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-stone-500" />
+              <span className="h-2 w-2 rounded-full bg-red-500" />
               Delayed Jobs
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-200 text-stone-700 border border-stone-300 group-hover:scale-110 transition-transform">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 text-red-600 border border-red-200 group-hover:scale-110 transition-transform">
               <AlertOctagon className="h-4 w-4" />
             </div>
           </div>
@@ -112,10 +112,10 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
       >
         <div className="p-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-stone-600 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">
               Completed Jobs
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100 text-stone-600 border border-stone-200 group-hover:scale-110 transition-transform">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 group-hover:scale-110 transition-transform">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
@@ -130,7 +130,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
           </div>
           <div className="mt-3.5 h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
             <div
-              className="h-full bg-stone-400 rounded-full transition-all duration-500"
+              className="h-full bg-emerald-500 rounded-full transition-all duration-500"
               style={{ width: `${metrics.completionRatePercentage}%` }}
             />
           </div>

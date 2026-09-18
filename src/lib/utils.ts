@@ -1,90 +1,70 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { JobStatus, MachineStatus } from '@/types/job';
+import { JobStatus, Job } from '@/types/job';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(date);
-  } catch {
-    return dateString;
-  }
-}
-
-export function getDaysRemaining(dueDateString: string): number {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const due = new Date(dueDateString);
-  due.setHours(0, 0, 0, 0);
-  const diffTime = due.getTime() - today.getTime();
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-}
-
-export function getDueDateUrgency(dueDateString: string, status: JobStatus) {
-  if (status === 'Completed') {
-    return { label: 'Completed', level: 'completed' as const, bg: 'bg-white text-stone-500 border-stone-200' };
-  }
-  const days = getDaysRemaining(dueDateString);
-  if (days < 0) {
-    return { label: `${Math.abs(days)} day${Math.abs(days) > 1 ? 's' : ''} overdue`, level: 'overdue' as const, bg: 'bg-stone-200 text-stone-800 border-stone-400 font-medium' };
-  }
-  if (days === 0) {
-    return { label: 'Due Today', level: 'today' as const, bg: 'bg-stone-100 text-stone-700 border-stone-300 font-medium' };
-  }
-  if (days === 1) {
-    return { label: 'Due Tomorrow', level: 'soon' as const, bg: 'bg-stone-50 text-stone-600 border-stone-200' };
-  }
-  if (days <= 3) {
-    return { label: `Due in ${days} days`, level: 'soon' as const, bg: 'bg-stone-50 text-stone-600 border-stone-200' };
-  }
-  return { label: `Due in ${days} days`, level: 'normal' as const, bg: 'bg-white text-stone-500 border-stone-200' };
-}
-
-export function getStatusBadgeTheme(status: JobStatus) {
+export const getStatusBadgeTheme = (status: JobStatus) => {
   switch (status) {
-    case 'Pending':
+    case 'Completed':
       return {
-        bg: 'bg-white text-stone-500 border-stone-200',
-        dot: 'bg-stone-300',
-        badge: 'border-stone-200 bg-white text-stone-500',
+        badge: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        dot: 'bg-emerald-500',
       };
     case 'In Progress':
       return {
-        bg: 'bg-stone-100 text-stone-700 border-stone-300',
-        dot: 'bg-stone-500',
-        badge: 'border-stone-300 bg-stone-100 text-stone-700',
+        badge: 'bg-blue-50 text-blue-700 border-blue-200',
+        dot: 'bg-blue-500',
       };
     case 'Delayed':
       return {
-        bg: 'bg-stone-200 text-stone-800 border-stone-400',
-        dot: 'bg-stone-700',
-        badge: 'border-stone-400 bg-stone-200 text-stone-800',
+        badge: 'bg-red-50 text-red-700 border-red-200',
+        dot: 'bg-red-500',
       };
-    case 'Completed':
+    default:
       return {
-        bg: 'bg-stone-50 text-stone-600 border-stone-200',
+        badge: 'bg-stone-50 text-stone-600 border-stone-200',
         dot: 'bg-stone-400',
-        badge: 'border-stone-200 bg-stone-50 text-stone-600',
       };
   }
-}
+};
 
-export function getMachineStatusBadge(status: MachineStatus) {
-  switch (status) {
-    case 'Operational':
-    case 'Busy':
-      return { label: status, bg: 'bg-stone-50 text-stone-600 border-stone-200' };
-    case 'Maintenance Required':
-      return { label: status, bg: 'bg-stone-200 text-stone-800 border-stone-400' };
-    case 'Idle':
-      return { label: status, bg: 'bg-white text-stone-500 border-stone-200' };
-  }
-}
+export const getDueDateUrgency = (dueDateStr: string, status: JobStatus) => {
+  if (status === 'Completed') return { label: 'Completed', bg: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
+
+  const dueDate = new Date(dueDateStr);
+  const now = new Date();
+  
+  dueDate.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
+  const diffTime = dueDate.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) return { label: `${Math.abs(diffDays)} days overdue`, bg: 'bg-red-100 text-red-700 border-red-200 font-bold' };
+  if (diffDays === 0) return { label: 'Due today', bg: 'bg-amber-100 text-amber-800 border-amber-200 font-bold' };
+  if (diffDays <= 2) return { label: 'Due soon', bg: 'bg-blue-50 text-blue-700 border-blue-200' };
+  
+  return { label: `In ${diffDays} days`, bg: 'bg-stone-100 text-stone-600 border-stone-200' };
+};
+
+export const formatDate = (dateStr: string) => {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+export const getDaysRemaining = (dueDateStr: string): number => {
+  const dueDate = new Date(dueDateStr);
+  const now = new Date();
+  
+  dueDate.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
+  const diffTime = dueDate.getTime() - now.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+};

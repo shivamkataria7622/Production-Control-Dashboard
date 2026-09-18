@@ -116,7 +116,7 @@ export const JobsTable: React.FC<JobsTableProps> = ({
                   <td className="py-3.5 px-4 font-mono font-semibold text-stone-800 group-hover:text-stone-900">
                     <div className="flex items-center gap-2">
                       {isDelayed && (
-                        <AlertTriangle className="h-3.5 w-3.5 text-stone-500 shrink-0" />
+                        <AlertTriangle className="h-3.5 w-3.5 text-red-500 shrink-0" />
                       )}
                       <span>{job.id}</span>
                     </div>
@@ -182,8 +182,8 @@ export const JobsTable: React.FC<JobsTableProps> = ({
                         className={cn(
                           'h-1.5 w-1.5 rounded-full',
                           job.machine.status === 'Operational'
-                            ? 'bg-stone-400'
-                            : 'bg-stone-700'
+                            ? 'bg-emerald-500'
+                            : 'bg-red-500'
                         )}
                       />
                       <span>{job.machine.type}</span>

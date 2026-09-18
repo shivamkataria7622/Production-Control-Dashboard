@@ -186,10 +186,10 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({
               className={cn(
                 "h-full rounded-full transition-all duration-500",
                 job.status === "Completed"
-                  ? "bg-stone-500"
+                  ? "bg-emerald-500"
                   : job.status === "Delayed"
-                    ? "bg-stone-800"
-                    : "bg-stone-400",
+                    ? "bg-red-500"
+                    : "bg-blue-500",
               )}
               style={{ width: `${job.completionPercentage}%` }}
             />
